@@ -16,5 +16,4 @@ jobs:
           reporter: github-pr-review
           eslint_flags: '{src,apps,libs,test}/**/*.ts --fix'
           fail_on_error: 'true'
-#      - name: eslint
-#        run: npm run lint
+        run: npm run lint
