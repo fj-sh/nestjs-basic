@@ -14,7 +14,9 @@ jobs:
         uses: reviewdog/action-eslint@v1
         with:
           reporter: github-pr-review
-          eslint_flags: '{src,apps,libs,test}/**/*.ts --fix'
+          eslint_flags: '{src,apps,libs,test}/**/*.ts'
           level: error
           fail_on_error: 'true'
-#        run: npm run lint | reviewdog -reporter=github-pr-review
+        # 以下のアクションがないと、GitHub Actions が正常に終了してしまい、Pull Request に指摘コメントが入らなかったため、追加した。
+      - name: eslint
+        run: npm run lint
