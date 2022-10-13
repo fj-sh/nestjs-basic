@@ -1,8 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  Logger,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { LoggingInterceptor } from '../interceptors/logging.interceptor';
+import { TransformInterceptor } from '../interceptors/transform.interceptor';
 
+@UseInterceptors(LoggingInterceptor)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
@@ -14,9 +27,11 @@ export class TasksController {
 
   @Get()
   findAll() {
+    Logger.log('/tasks is called.');
     return this.tasksService.findAll();
   }
 
+  @UseInterceptors(TransformInterceptor)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tasksService.findOne(+id);

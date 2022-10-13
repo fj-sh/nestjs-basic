@@ -8,12 +8,11 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TaskRepository } from './task.repository';
 
 @Injectable()
 export class TasksService {
-  constructor(
-    @InjectRepository(Task) private taskRepository: Repository<Task>,
-  ) {}
+  constructor(private readonly taskRepository: TaskRepository) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     return await this.taskRepository
@@ -24,9 +23,7 @@ export class TasksService {
   }
 
   async findAll() {
-    return await this.taskRepository.find().catch((e) => {
-      throw new InternalServerErrorException(e.message);
-    });
+    return await this.taskRepository.find();
   }
 
   async findOne(id: number) {
