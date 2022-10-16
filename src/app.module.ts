@@ -3,9 +3,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { TasksModule } from './tasks/tasks.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
-  imports: [DatabaseModule, TasksModule],
+  imports: [
+    DatabaseModule,
+    TasksModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      include: [TasksModule],
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      playground: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

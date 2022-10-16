@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateTaskDto {
+  name: String!
+}
+
+type DeleteResponseDto {
+  delete: Boolean!
+  message: String!
+}
+
+input DeleteTaskDto {
+  id: Float!
+}
+
+input FindTaskDto {
+  id: Float!
+}
+
+type Mutation {
+  createTask(newTask: CreateTaskDto!): Task!
+  deleteTask(deleteTask: DeleteTaskDto!): DeleteResponseDto!
+  updateTask(updateTask: UpdateTaskDto!): Task!
+}
+
+type Query {
+  getAllTasks: [Task!]!
+  getTask(findTask: FindTaskDto!): Task!
+}
+
+type Task {
+  id: Float!
+  name: String!
+}
+
+input UpdateTaskDto {
+  id: Float!
+  name: String!
+}

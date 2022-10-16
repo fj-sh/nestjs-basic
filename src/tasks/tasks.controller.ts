@@ -14,6 +14,8 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { LoggingInterceptor } from '../interceptors/logging.interceptor';
 import { TransformInterceptor } from '../interceptors/transform.interceptor';
+import { DeleteTaskDto } from './dto/delete-task.dto';
+import { FindTaskDto } from './dto/find-task.dto';
 
 @UseInterceptors(LoggingInterceptor)
 @Controller('tasks')
@@ -31,18 +33,17 @@ export class TasksController {
   }
 
   @UseInterceptors(TransformInterceptor)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  findOne(@Body() findTaskDto: FindTaskDto) {
+    return this.tasksService.findOne(findTaskDto.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  @Patch()
+  update(@Body() updateTaskDto: UpdateTaskDto) {
+    return this.tasksService.update(updateTaskDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  @Delete()
+  remove(@Body() deleteTaskDto: DeleteTaskDto) {
+    return this.tasksService.remove(deleteTaskDto.id);
   }
 }

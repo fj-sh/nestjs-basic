@@ -37,22 +37,24 @@ export class TasksService {
     return task;
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const updated = await this.taskRepository.update(id, {
+  async update(updateTaskDto: UpdateTaskDto): Promise<Task> {
+    await this.taskRepository.update(updateTaskDto.id, {
       name: updateTaskDto.name,
     });
 
-    const updatedPost = await this.taskRepository.findOneBy({ id });
+    const updatedPost = await this.taskRepository.findOneBy({
+      id: Number(updateTaskDto.id),
+    });
     if (updatedPost) {
       return updatedPost;
     }
 
     throw new NotFoundException(
-      `${id}に一致するデータが見つかりませんでした。`,
+      `${updateTaskDto.id}に一致するデータが見つかりませんでした。`,
     );
   }
 
-  async remove(id: number): Promise<DeleteResult> {
+  async remove(id: number): Promise<DeleteResponse> {
     const response = await this.taskRepository.delete(id);
 
     if (!response.affected) {
@@ -61,6 +63,9 @@ export class TasksService {
       );
     }
 
-    return response;
+    return {
+      message: `${id}を削除しました。`,
+      delete: true,
+    };
   }
 }

@@ -6,7 +6,9 @@ import {
   Timestamp,
   Entity,
 } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('tasks')
 export class Task {
   @PrimaryGeneratedColumn({
@@ -15,9 +17,11 @@ export class Task {
     type: 'smallint',
     comment: 'ID',
   })
+  @Field()
   readonly id: number;
 
   @Column('varchar', { comment: 'タスク名' })
+  @Field()
   name: string;
 
   @CreateDateColumn({ comment: '登録日時' })
