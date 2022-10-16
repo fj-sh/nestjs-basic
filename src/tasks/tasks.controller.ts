@@ -27,7 +27,6 @@ export class TasksController {
 
   @Get()
   findAll() {
-    Logger.log('/tasks is called.');
     return this.tasksService.findAll();
   }
 

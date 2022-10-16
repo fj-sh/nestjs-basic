@@ -7,7 +7,6 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TaskRepository } from './task.repository';
 
 @Injectable()
@@ -38,12 +37,11 @@ export class TasksService {
     return task;
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto) {
-    await this.taskRepository
-      .update(id, { name: updateTaskDto.name })
-      .catch((e) => {
-        throw new InternalServerErrorException(e.message);
-      });
+  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const updated = await this.taskRepository.update(id, {
+      name: updateTaskDto.name,
+    });
+
     const updatedPost = await this.taskRepository.findOneBy({ id });
     if (updatedPost) {
       return updatedPost;
@@ -55,9 +53,7 @@ export class TasksService {
   }
 
   async remove(id: number): Promise<DeleteResult> {
-    const response = await this.taskRepository.delete(id).catch((e) => {
-      throw new InternalServerErrorException(e.message);
-    });
+    const response = await this.taskRepository.delete(id);
 
     if (!response.affected) {
       throw new NotFoundException(
