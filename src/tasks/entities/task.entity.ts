@@ -7,10 +7,11 @@ import {
   Entity,
 } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { ITask } from '../interfaces/task.interface';
 
 @ObjectType()
 @Entity('tasks')
-export class Task {
+export class Task implements ITask {
   @PrimaryGeneratedColumn({
     name: 'id',
     unsigned: true,

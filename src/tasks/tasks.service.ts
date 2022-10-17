@@ -6,8 +6,8 @@ import {
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
-import { DeleteResult, Repository } from 'typeorm';
 import { TaskRepository } from './task.repository';
+import { DeleteResponse } from '../shared/interfaces/delete-response.interface';
 
 @Injectable()
 export class TasksService {
