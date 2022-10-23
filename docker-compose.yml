@@ -1,6 +1,23 @@
 version: "3"
 
 services:
+  nestjs-basic:
+    container_name: nestjs-basic
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    command: npm run start:dev
+    env_file:
+      - .env
+    networks:
+      - webnet
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:14
     volumes:
@@ -8,11 +25,16 @@ services:
       - ./postgres/initdb:/docker-entrypoint-initdb.d
     ports:
       - "${POSTGRES_PORT}:5432"
+    networks:
+      - webnet
     environment:
       - TZ=Asia/Tokyo
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+networks:
+  webnet:
 
 volumes:
   postgres:

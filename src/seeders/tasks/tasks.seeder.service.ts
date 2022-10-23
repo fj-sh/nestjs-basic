@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { TaskRepository } from '../../../tasks/task.repository';
-import { Task } from '../../../tasks/entities/task.entity';
+import { TaskRepository } from '../../tasks/task.repository';
+import { Task } from '../../tasks/entities/task.entity';
 import { tasks } from './data';
 
 @Injectable()
