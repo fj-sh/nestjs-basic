@@ -10,8 +10,6 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - "3000:${SERVER_PORT}"
     command: npm run start:dev
     env_file:
       - .env
@@ -29,8 +27,6 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - "3001:${SERVER_PORT}"
     command: npm run start:dev
     env_file:
       - .env
@@ -45,12 +41,14 @@ services:
     build: ./nginx
     links:
       - nestjs-basic1:nestjs-basic1
+      - nestjs-basic2:nestjs-basic2
     networks:
       - webnet
     ports:
       - "80:80"
     depends_on:
       - nestjs-basic1
+      - nestjs-basic2
 
   postgres:
     image: postgres:14
