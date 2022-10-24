@@ -1,22 +1,56 @@
 version: "3"
 
 services:
-  nestjs-basic:
-    container_name: nestjs-basic
+
+  nestjs-basic1:
+    container_name: nestjs-basic1
     build:
       context: .
+      dockerfile: ./web1/Dockerfile
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - "3000:${SERVER_PORT}"
     command: npm run start:dev
     env_file:
       - .env
     networks:
       - webnet
+    restart: on-failure
     depends_on:
       - postgres
+
+  nestjs-basic2:
+    container_name: nestjs-basic2
+    build:
+      context: .
+      dockerfile: ./web2/Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:${SERVER_PORT}"
+    command: npm run start:dev
+    env_file:
+      - .env
+    networks:
+      - webnet
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  nginx:
+    restart: always
+    build: ./nginx
+    links:
+      - nestjs-basic1:nestjs-basic1
+    networks:
+      - webnet
+    ports:
+      - "80:80"
+    depends_on:
+      - nestjs-basic1
 
   postgres:
     image: postgres:14
